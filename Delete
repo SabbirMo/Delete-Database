@@ -1,0 +1,29 @@
+  @FXML
+    void deleteButton() {
+
+        int delete = tableView.getSelectionModel().getSelectedIndex();
+        int table = tableView.getItems().remove(delete).getId();
+
+        String jdbcUrl = "jdbc:mysql://localhost/employee_management";
+        String username = "root";
+        String password = "sabbir";
+
+        Employee employee = new Employee();
+
+        String deleteQuery = "delete from employeelist where id = ?";
+
+        try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery))  {
+
+            preparedStatement.setInt(1, table);
+            preparedStatement.execute();
+            connection.close();
+
+            
+            System.out.println("Delete Completed!");
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+
+    }
